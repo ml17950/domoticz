@@ -268,3 +268,12 @@ width: 99.5% !important;
 .events-editor {
     top: 80px;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	background-color: #545454;
+	border-left: 1px solid #333333;
+	border-right: 1px solid #333333;
+}

@@ -2,49 +2,45 @@
     <table class="display" id="uservariablestable" border="0" cellpadding="0" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th width="30" align="left">Idx</th>
+                <th width="30"  align="left">Idx</th>
                 <th width="120" align="left" data-i18n="Variable name">Variable name</th>
-			    <th width="60" align="left" data-i18n="Variable type">Variable type</th>
+			    <th width="60"  align="left" data-i18n="Variable type">Variable type</th>
                 <th width="120" align="left" data-i18n="Current value">Current value</th>
 				<th width="120" align="left" data-i18n="Last update">Last update</th>
             </tr>
-        </thead>		
+        </thead>
     </table>
-    <table class="display" border="0" cellpadding="0" cellspacing="0" width="100%">
-		<tr>
-			<td align="left">
-				<a class="btnstyle3-dis" id="uservariableupdate" data-i18n="Update">Update</a>&nbsp;
-				<a class="btnstyle3-dis" id="uservariabledelete" data-i18n="Delete">Delete</a>
-			</td>
-			<td align="right"><a class="btnstyle3" ng-click="RefreshUserVariablesTable();" data-i18n="Refresh">Refresh</a></td>
-		</tr>
-    </table>
-	<p>
-	<h2 data-i18n="Edit variable">Edit variable</h2><br>
-	<table class="display" id="uservariablesedittable" border="0" cellpadding="0" cellspacing="20">
-		<tr id="uservariablenamerow">
-			<td align="right" style="width:110px"><label for="uservariablename"><span data-i18n="Variable name"></span>:</label></td>
-			<td><input type="text" id="uservariablename" style="width: 250px; padding: .2em;" class="text ui-widget-content ui-corner-all"></td>
-		</tr>
-		<tr>
-			<td align="right" style="width:110px"><label for="uservariabletype"><span data-i18n="Variable type"></span>:</label></td>
-			<td><select id="uservariabletype" style="width:160px" class="combobox ui-corner-all">
-					<option value="0" data-i18n="Integer">Integer</option>
-					<option value="1" data-i18n="Float">Float</option>
-					<option value="2" data-i18n="String">String</option>
-					<option value="3" data-i18n="Date">Date</option>
-					<option value="4" data-i18n="Time">Time</option>
-				</select>
-			</td>
-		</tr>
-		<tr id="uservariablevaluerow">
-			<td align="right" style="width:110px"><label for="uservariablevalue"><span data-i18n="Variable value"></span>:</label></td>
-			<td><input type="text" id="uservariablevalue" style="width: 250px; padding: .2em;" class="text ui-widget-content ui-corner-all"></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<a class="btnstyle3" onclick="AddUpdateVariable('a',0);" data-i18n="Add">Add</a>
-			</td>
-		</tr>	
-	</table>
+	<div class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-tl ui-corner-tr" style="padding: 5px; margin-top: 10px;">
+	  <span data-i18n="Edit variable">Edit variable</span>
+	</div>
+    <div class="uservariablesdisplay" id="uservariablesedittable">
+        <div class="uservariableseditbox">
+            <label class="uservariableseditlabel" for="uservariablename"><span data-i18n="Variable name"></span>:</label>
+            <input class="uservariablename text ui-widget-content ui-corner-all" type="text" id="uservariablename">
+        </div>
+        <div class="uservariableseditbox">
+            <label class="uservariableseditlabel" for="uservariabletype"><span data-i18n="Variable type"></span>:</label>
+            <select class="uservariabletype combobox ui-corner-all" id="uservariabletype">
+                <option value="0" data-i18n="Integer">Integer</option>
+                <option value="1" data-i18n="Float">Float</option>
+                <option value="2" data-i18n="String">String</option>
+                <option value="3" data-i18n="Date">Date</option>
+                <option value="4" data-i18n="Time">Time</option>
+            </select>
+        </div>
+        <div class="uservariableseditbox">
+            <label class="uservariableseditlabel" for="uservariablevalue"><span data-i18n="Variable value"></span>:</label>
+            <input class="uservariablevalue text ui-widget-content ui-corner-all" type="text" id="uservariablevalue">
+        </div>
+        <div class="uservariableseditbox">
+            <label class="uservariablesbtnlabel"></label>
+            <a class="btnstyle3 uservariablesbtn" id="uservariableadd" onclick="AddUpdateVariable('a',0);" data-i18n="Add">Add</a>
+            <a class="btnstyle3-dis uservariablesbtn" id="uservariableupdate" data-i18n="Update">Update</a>
+            <a class="btnstyle3-dis uservariablesbtn" id="uservariabledelete" data-i18n="Delete">Delete</a>
+            <a class="btnstyle3 uservariablesbtn" id="uservariablerefresh" ng-click="RefreshUserVariablesTable();" data-i18n="Refresh">Refresh</a>
+        </div>
+    </div>
+    <div class="fg-toolbar ui-toolbar ui-widget-header ui-helper-clearfix ui-corner-bl ui-corner-br" style="height: 32px;">
+      &nbsp;
+    </div>
 </div>

@@ -456,3 +456,12 @@ table.mobileitem {
 #hardwarecontent li {
 	line-height: normal;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	background-color: #545454;
+	border-left: 1px solid #333333;
+	border-right: 1px solid #333333;
+}

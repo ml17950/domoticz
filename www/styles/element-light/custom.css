@@ -251,3 +251,12 @@ width: 99.5% !important;
     top: 80px;
     bottom: 20px;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	background-color: #545454;
+	border-left: 1px solid #333333;
+	border-right: 1px solid #333333;
+}

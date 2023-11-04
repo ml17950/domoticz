@@ -46,6 +46,9 @@ define(['app'], function (app) {
 								$('#uservariablesedittable #uservariablename').val("");
 								$('#uservariablesedittable #uservariablevalue').val("");
 								$('#uservariablesedittable #uservariabletype').val("0");
+								window.setTimeout(function(){
+									bootbox.hideAll();
+								}, 2000); // close bootbox after 2 seconds
 							}
 							else {
 								ShowNotify($.t(data.message), 2500, true);

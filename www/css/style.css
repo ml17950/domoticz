@@ -2497,3 +2497,56 @@ table.display thead th.sorting_disabled div.DataTables_sort_wrapper {
 .digit6 {
 	font-size: 200% !important;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	/* background-color: var(--box-bg-color); */
+	/* border-top: none !important; */
+	/* border-bottom: none !important; */
+	/* border-left: var(--box-border); */
+	/* border-right: var(--box-border); */
+	padding: 10px 0 17px 0;
+}
+.uservariableseditbox {
+	padding: 7px 15px 0 15px;
+}
+.uservariableseditlabel {
+	display: inline-block;
+	width: 120px;
+	text-align: right;
+	padding-right: 5px;
+}
+.uservariablename,
+.uservariablevalue {
+	width: 250px; padding: .2em;
+}
+.uservariabletype {
+	width: 255px; padding: .2em;
+}
+.uservariablesbtnlabel {
+	display: inline-block;
+	width: 125px;
+}
+#uservariableadd,
+#uservariableupdate,
+#uservariabledelete,
+#uservariablerefresh {
+	margin: 4px 2px 0 0;
+	min-width: 48px;
+	text-align: center;
+}
+@media only screen and (max-width: 400px)  {
+	.uservariableseditlabel	{ text-align: left; }
+	.uservariablename		{ width: 160px; }
+	.uservariabletype		{ width: 160px; }
+	.uservariablevalue		{ width: 160px; }
+	.uservariablesbtnlabel	{ display: none; }
+}
+@media only screen and (max-width: 470px)  {
+	.dataTables_length		{ display: block; width: 100%; float: none; margin-bottom: 5px; }
+	.dataTables_filter		{ display: block; width: 100%; float: none; text-align: left; }
+	.dataTables_info		{ display: block; width: 100%; float: none; margin-bottom: 15px; }
+	.dataTables_paginate	{ display: block; width: 100%; float: none; text-align: left; }
+}

@@ -28,3 +28,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', end
 .warning-text {
 	color: yellow;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	background-color: #545454;
+	border-left: 1px solid #333333;
+	border-right: 1px solid #333333;
+}

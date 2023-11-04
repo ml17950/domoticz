@@ -1071,3 +1071,11 @@ body table#itemtablenostatus tr td:first-child + td + td + td + td + td + td {
 .list-group-item-action {
   color: #444;
 }
+
+/*********************************************************************************/
+/* UserVariables                                                                 */
+/*********************************************************************************/
+.uservariablesdisplay {
+	background-color: #545454;
+	margin-top: -15px;
+}
