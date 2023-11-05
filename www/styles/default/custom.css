@@ -76,10 +76,6 @@ hr {
     transition: .3s;
 }
 
-	--box-bg-color: #11213d;
-	--box-border: 1px solid #333;
-
-
 .uservariablesdisplay {
 	background-color: var(--box-bg-color);
 	border-top: none !important;
