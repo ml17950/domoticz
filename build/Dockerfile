@@ -10,7 +10,6 @@ RUN apt-get update -qq \
       g++ \
       gcc \
       git \
-      libcereal-dev \
       libcurl4-gnutls-dev \
       libjsoncpp-dev \
       liblua5.3-dev \
@@ -49,6 +48,8 @@ RUN VERSION_=$(echo ${BOOST_VERSION} | tr . _) \
  && ./b2 install threading=multi link=static --with-thread --with-system \
  && cd .. \
  && rm -fr boost_${VERSION_}
+
+RUN git config --global --add safe.directory '*'
 
 COPY build-helper.sh .
 

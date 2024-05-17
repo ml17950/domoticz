@@ -2,6 +2,7 @@
 
 #include "DomoticzHardware.h"
 #include "hardwaretypes.h"
+#include "CounterHelper.h"
 
 namespace Json
 {
@@ -11,7 +12,17 @@ namespace Json
 class EnphaseAPI : public CDomoticzHardwareBase
 {
 public:
-	EnphaseAPI(int ID, const std::string& IPAddress, unsigned short usIPPort, int PollInterval, const bool bPollInverters, const std::string& szUsername, const std::string& szPassword, const std::string &szSiteID);
+	EnphaseAPI(
+		int ID,
+		const std::string& IPAddress,
+		unsigned short usIPPort,
+		int PollInterval,
+		const bool bPollInverters,
+		const bool iInverterDetails,
+		const bool bDontGetMeteredValues,
+		const std::string& szUsername,
+		const std::string& szPassword,
+		const std::string &szSiteID);
 	~EnphaseAPI() override = default;
 	bool WriteToHardware(const char* pdata, unsigned char length) override;
 	std::string m_szSoftwareVersion;
@@ -28,11 +39,14 @@ private:
 	bool getPowerStatus();
 	bool getInverterDetails();
 	bool getInventoryDetails(Json::Value& result);
+	bool getDevStatusDetails(Json::Value& result);
 
 	void parseProduction(const Json::Value& root);
 	void parseConsumption(const Json::Value& root);
 	void parseStorage(const Json::Value& root);
 	void parseInventory(const Json::Value& root);
+	void parseDevStatus(const Json::Value& root);
+
 	bool SetPowerActive(const bool bActive);
 
 	bool CheckAuthJWT(const std::string& szToken, const bool bDisplayErrors);
@@ -60,6 +74,8 @@ private:
 	std::string m_szSiteID;
 
 	bool m_bGetInverterDetails = false;
+	bool m_bDontGetMeteredValues = false;
+	int iInverterDetailsLevel = 0;
 
 	bool m_bHaveConsumption = false;
 	bool m_bHaveNetConsumption = false;
@@ -70,8 +86,9 @@ private:
 	bool m_bCheckedInventory = false;
 	bool m_bHaveInventory = false;
 
-	uint64_t m_nLastProductionCounterValue = 0;
-	uint64_t m_nProductionCounterOffset = 0;
+	bool m_bHaveDevStatus = false;
+
+	CounterHelper m_ProductionCounter;
 
 	std::shared_ptr<std::thread> m_thread;
 };

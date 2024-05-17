@@ -4,11 +4,6 @@
 #include <boost/signals2.hpp>
 
 #include "../main/RFXNames.h"
-// type support
-#include <cereal/types/string.hpp>
-#include <cereal/types/memory.hpp>
-// the archiver
-#include <cereal/archives/portable_binary.hpp>
 
 enum _eLogLevel : uint32_t;
 enum _eDebugLevel : uint32_t;
@@ -17,6 +12,7 @@ enum _eDebugLevel : uint32_t;
 class CDomoticzHardwareBase : public StoppableTask
 {
 	friend class MainWorker;
+	friend class CounterHelper;
 
 	public:
 	CDomoticzHardwareBase();
@@ -81,7 +77,6 @@ class CDomoticzHardwareBase : public StoppableTask
 	void StartHeartbeatThread();
 	void StartHeartbeatThread(const char *ThreadName);
 	void StopHeartbeatThread();
-	void HandleHBCounter(int iInterval);
 
 	// Sensor Helpers
 	void SendTempSensor(int NodeID, int BatteryLevel, float temperature, const std::string &defaultname, int RssiLevel = 12);
@@ -135,7 +130,9 @@ class CDomoticzHardwareBase : public StoppableTask
 	int MigrateSelectorSwitch(int NodeID, uint8_t ChildID, const std::string &LevelNames, const std::string &LevelActions, bool bMigrate);
 	void CreateBlindSwitch(int NodeID, uint8_t ChildID, _eSwitchType switchtype, bool bDeviceUsed, bool bReversePosition, bool bReverseState, uint8_t cmnd, uint8_t level, const std::string &defaultName, const std::string &userName, int32_t batteryLevel, uint8_t rssiLevel = 12);
 	void SendBlindSwitch(int NodeID, uint8_t ChildID, uint8_t cmnd, uint8_t level, const std::string &defaultName, const std::string &userName, int32_t batteryLevel, uint8_t rssiLevel = 12);
-
+#ifdef WITH_OPENZWAVE
+	void SendZWaveAlarmSensor(int NodeID, uint8_t InstanceID, int BatteryLevel, uint8_t aType, int aValue, const std::string& alarmLabel, const std::string& defaultname);
+#endif
 	int m_iHBCounter = { 0 };
 	bool m_bIsStarted = { false };
 

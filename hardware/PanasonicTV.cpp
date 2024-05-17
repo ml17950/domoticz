@@ -12,8 +12,6 @@
 #include "../hardware/hardwaretypes.h"
 #include <iostream>
 
-#define round(a) ( int ) ( a + .5 )
-
 /*
 
 Possible Commands:
@@ -1010,7 +1008,7 @@ void CPanasonic::AddNode(const std::string& Name, const std::string& IPAddress, 
 	sprintf(szID, "%X%02X%02X%02X", 0, 0, (ID & 0xFF00) >> 8, ID & 0xFF);
 
 	//Also add a light (push) device
-	m_sql.InsertDevice(m_HwdID, szID, 1, pTypeLighting2, sTypeAC, STYPE_Media, 0, "Unavailable", Name, 12, 255, 1);
+	m_sql.InsertDevice(m_HwdID, 0, szID, 1, pTypeLighting2, sTypeAC, STYPE_Media, 0, "Unavailable", Name, 12, 255, 1);
 
 	ReloadNodes();
 }

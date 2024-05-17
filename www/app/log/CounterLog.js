@@ -52,6 +52,43 @@ define(['app', 'lodash', 'RefreshingChart', 'DataLoader', 'ChartLoader', 'log/Ch
             }
         });
 
+        app.component('counterHourChart', {
+            require: {
+                logCtrl: '^deviceCounterLog'
+            },
+            bindings: {
+                device: '<'
+            },
+            templateUrl: 'app/log/chart-hour.html',
+            controllerAs: 'vm',
+            controller: function ($location, $route, $scope, $timeout, $element, domoticzGlobals, domoticzApi, domoticzDataPointApi, chart, counterLogParams, counterLogSubtypeRegistry) {
+                const self = this;
+                self.range = 'hour';
+
+                self.$onInit = function () {
+                    const subtype = counterLogSubtypeRegistry.get(self.logCtrl.subtype);
+                    self.chart = new RefreshingChart(
+                        chart.baseParams($),
+                        chart.angularParams($location, $route, $scope, $timeout, $element),
+                        chart.domoticzParams(domoticzGlobals, domoticzApi, domoticzDataPointApi),
+                        counterLogParams.chartParamsHour(domoticzGlobals, self,
+                            subtype.chartParamsHourTemplate,
+                            {
+                                isShortLogChart: false,
+                                yAxes: subtype.yAxesHour(self.device.SwitchTypeVal),
+                                timestampFromDataItem: function (dataItem, yearOffset = 0) {
+                                    return GetLocalDateTimeFromString(dataItem.d, yearOffset);
+                                },
+                                preprocessData: subtype.preprocessHourData,
+                                preprocessDataItems: subtype.preprocessHourDataItems
+                            },
+                            subtype.hourSeriesSuppliers(self.device.SwitchTypeVal, self.device.Divider)
+                        )
+                    );
+                }
+            }
+        });
+
         app.component('counterWeekChart', {
             require: {
                 logCtrl: '^deviceCounterLog'
@@ -192,6 +229,8 @@ define(['app', 'lodash', 'RefreshingChart', 'DataLoader', 'ChartLoader', 'log/Ch
                                     return subtype.extendDataRequestCompare.call(self, dataRequest);
                                 },
                                 preprocessData: function (data) {
+									this.deviceCounterName = self.device.ValueQuantity;
+									
                                     if (subtype.preprocessCompareData !== undefined) {
                                         subtype.preprocessCompareData.call(self, data);
                                     }

@@ -385,7 +385,7 @@ void CTeleinfoBase::ProcessTeleinfo(const std::string& name, int rank, Teleinfo&
 			teleinfo.pAlertPPOT = teleinfo.PPOT;
 			teleinfo.PPOT >>= 1;
 			std::stringstream ss;
-			ss << "Bitmap phases: " << std::bitset<3>(~teleinfo.PPOT);
+			ss << "Bitmap phases: " << std::bitset<3>(~static_cast<uint64_t>(teleinfo.PPOT));
 			message = ss.str();
 			SendAlertSensor(32 * rank + 7, 255, alertPPOT, message, " Alerte Potentiels");
 		}
@@ -677,15 +677,12 @@ void CTeleinfoBase::MatchLine()
 		// Color of tomorow
 		int tomorow = ( m_teleinfo.STGE & 0x0C000000 ) >> 26;
 
-		// If 0 then tomorow color is identical to today's color 
-		if ( tomorow == 0 ) tomorow = ( m_teleinfo.STGE & 0x03000000 ) >> 24;
-
 		switch (tomorow)
 		{
 			case 1: m_teleinfo.DEMAIN = "BLEU"; break;
 			case 2: m_teleinfo.DEMAIN = "BLAN"; break;
 			case 3: m_teleinfo.DEMAIN = "ROUG"; break;		
-			default: break;
+			default: m_teleinfo.DEMAIN = "----"; break;
 		}
 	}
 	

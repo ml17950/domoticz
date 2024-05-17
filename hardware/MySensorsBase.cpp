@@ -16,7 +16,6 @@
 #include "../webserver/cWebem.h"
 #include <json/json.h>
 
-#define round(a) ( int ) ( a + .5 )
 #define MAX_PAYLOAD_LENGTH 25 //https://www.mysensors.org/download/serial_api_20
 
 std::string MySensorsBase::GetMySensorsValueTypeStr(const enum _eSetType vType)
@@ -1070,8 +1069,7 @@ void MySensorsBase::UpdateSwitchLastUpdate(const unsigned char NodeID, const int
 	result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (HardwareID==%d) AND (DeviceID=='%q') AND (Unit==%d) AND (Type==%d) AND (Subtype==%d)", m_HwdID, szIdx, ChildID, int(pTypeGeneralSwitch), int(sSwitchTypeAC));
 	if (result.empty())
 		return; //not found!
-	std::string sLastUpdate = TimeToString(nullptr, TF_DateTime);
-	m_sql.safe_query("UPDATE DeviceStatus SET LastUpdate='%q' WHERE (ID = '%q')", sLastUpdate.c_str(), result[0][0].c_str());
+	m_sql.UpdateLastUpdate(result[0][0]);
 }
 
 void MySensorsBase::UpdateBlindSensorLastUpdate(const int NodeID, const int ChildID)
@@ -1082,8 +1080,7 @@ void MySensorsBase::UpdateBlindSensorLastUpdate(const int NodeID, const int Chil
 	result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (HardwareID==%d) AND (DeviceID=='%q') AND (Unit==%d)", m_HwdID, szIdx, ChildID);
 	if (result.empty())
 		return;
-	std::string sLastUpdate = TimeToString(nullptr, TF_DateTime);
-	m_sql.safe_query("UPDATE DeviceStatus SET LastUpdate='%q' WHERE (ID = '%q')", sLastUpdate.c_str(), result[0][0].c_str());
+	m_sql.UpdateLastUpdate(result[0][0]);
 }
 
 void MySensorsBase::UpdateRGBWSwitchLastUpdate(const int NodeID, const int ChildID)
@@ -1098,8 +1095,7 @@ void MySensorsBase::UpdateRGBWSwitchLastUpdate(const int NodeID, const int Child
 	result = m_sql.safe_query("SELECT ID FROM DeviceStatus WHERE (HardwareID==%d) AND (DeviceID=='%q') AND (Unit==%d)", m_HwdID, szIdx, ChildID);
 	if (result.empty())
 		return;
-	std::string sLastUpdate = TimeToString(nullptr, TF_DateTime);
-	m_sql.safe_query("UPDATE DeviceStatus SET LastUpdate='%q' WHERE (ID = '%q')", sLastUpdate.c_str(), result[0][0].c_str());
+	m_sql.UpdateLastUpdate(result[0][0]);
 }
 
 void MySensorsBase::UpdateSwitch(const _eSetType vType, const unsigned char Idx, const int SubUnit, const bool bOn, const double Level, const std::string& defaultname, const int BatLevel)
@@ -1341,7 +1337,7 @@ bool MySensorsBase::WriteToHardware(const char* pdata, const unsigned char /*len
 				float fvalue = (100.0F / 15.0F) * float(pCmd->LIGHTING2.level);
 				if (fvalue > 100.0F)
 					fvalue = 100.0F; // 99 is fully on
-				int svalue = round(fvalue);
+				int svalue = ground(fvalue);
 				return SendNodeSetCommand(node_id, child_sensor_id, MT_Set, V_PERCENTAGE, std::to_string(svalue), pChild->useAck, pChild->ackTimeout);
 			}
 		}
@@ -1490,7 +1486,7 @@ bool MySensorsBase::WriteToHardware(const char* pdata, const unsigned char /*len
 			{
 				std::stringstream sstr;
 				int Brightness = 100;
-				int wWhite = round((255.0F / 100.0F) * float(Brightness));
+				int wWhite = ground((255.0F / 100.0F) * float(Brightness));
 				if (!bIsRGBW)
 				{
 					sstr << std::setw(2) << std::uppercase << std::hex << std::setfill('0') << std::hex << wWhite
@@ -1983,7 +1979,7 @@ void MySensorsBase::ParseLine(const std::string& sLine)
 			bHaveValue = true;
 			break;
 		case V_DIRECTION:
-			pChild->SetValue(vType, round(atof(payload.c_str())));
+			pChild->SetValue(vType, ground(atof(payload.c_str())));
 			bHaveValue = true;
 			break;
 		case V_LIGHT_LEVEL:

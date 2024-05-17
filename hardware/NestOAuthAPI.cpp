@@ -15,8 +15,6 @@
 #include "../main/json_helper.h"
 #include "../webserver/Base64.h"
 
-#define round(a) (int)(a + .5)
-
 // Base URL of API including trailing slash
 const std::string NEST_OAUTHAPI_BASE = "https://developer-api.nest.com/";
 const std::string NEST_OAUTHAPI_OAUTH_ACCESSTOKENURL = "https://api.home.nest.com/oauth2/access_token";
@@ -615,8 +613,8 @@ void CNestOAuthAPI::SetSetpoint(const int idx, const float temp)
 			return;
 	}
 
-	size_t iThermostat = (idx - 1) / 3;
-	if (iThermostat > m_thermostats.size())
+	int iThermostat = (idx - 1) / 3;
+	if (iThermostat > (int)m_thermostats.size())
 		return;
 
 	if (m_thermostats[iThermostat].Serial.empty())
@@ -655,10 +653,10 @@ void CNestOAuthAPI::SetSetpoint(const int idx, const float temp)
 bool CNestOAuthAPI::SetManualEcoMode(const unsigned char node_id, const bool bIsOn)
 {
 	// Determine the index for the thermostat.
-	size_t iThermostat = (node_id - 4) / 3;
+	int iThermostat = (node_id - 4) / 3;
 
 	// Check if we even got that many thermostats.
-	if (iThermostat > m_thermostats.size())
+	if (iThermostat > (int)m_thermostats.size())
 		return false;
 
 	// Grab a reference to that thermostat.
@@ -735,8 +733,8 @@ bool CNestOAuthAPI::PushToNestApi(const std::string & /*sMethod*/, const std::st
 
 bool CNestOAuthAPI::SetAway(const unsigned char Idx, const bool bIsAway)
 {
-	size_t iStructure = (Idx - 3) / 3;
-	if (iStructure > m_structures.size())
+	int iStructure = (Idx - 3) / 3;
+	if (iStructure > (int)m_structures.size())
 		return false;
 
 	if (m_structures[iStructure].StructureId.empty())

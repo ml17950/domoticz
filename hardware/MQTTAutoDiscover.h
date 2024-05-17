@@ -58,6 +58,8 @@ class MQTTAutoDiscover : public MQTT
 		int position_open = 100;
 		int position_closed = 0;
 
+		std::string on_command_type;
+
 		std::string payload_available;
 		std::string payload_not_available;
 
@@ -98,6 +100,9 @@ class MQTTAutoDiscover : public MQTT
 		std::string preset_mode_command_template;
 		std::string preset_mode_state_topic;
 		std::string preset_mode_value_template;
+		double temp_step = 1;
+		double temp_max = 35;
+		double temp_min = 7;
 
 		//Lock
 		std::string payload_lock = "LOCK";
@@ -105,7 +110,7 @@ class MQTTAutoDiscover : public MQTT
 		std::string state_locked = "LOCKED";
 		std::string state_unlocked = "UNLOCKED";
 
-		int qos = 0;
+		int qos = 1;
 
 		std::map<std::string, std::string> keys;
 
@@ -167,7 +172,7 @@ private:
 	std::string GetValueFromTemplate(Json::Value root, std::string szValueTemplate);
 	std::string GetValueFromTemplate(const std::string &szValue, std::string szValueTemplate);
 	bool SetValueWithTemplate(Json::Value& root, std::string szValueTemplate, std::string szValue);
-	bool GuessSensorTypeValue(const _tMQTTASensor* pSensor, uint8_t& devType, uint8_t& subType, std::string& szOptions, int& nValue, std::string& sValue);
+	bool GuessSensorTypeValue(_tMQTTASensor* pSensor, uint8_t& devType, uint8_t& subType, std::string& szOptions, int& nValue, std::string& sValue);
 	void ApplySignalLevelDevice(const _tMQTTASensor* pSensor);
 
 	void on_auto_discovery_message(const struct mosquitto_message* message);
@@ -179,6 +184,7 @@ private:
 	void handle_auto_discovery_light(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
 	void handle_auto_discovery_button(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
 	void handle_auto_discovery_binary_sensor(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
+	void handle_auto_discovery_device_autiomation_sensor(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
 	void handle_auto_discovery_camera(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
 	void handle_auto_discovery_cover(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
 	void handle_auto_discovery_climate(_tMQTTASensor* pSensor, const struct mosquitto_message* message);
@@ -191,6 +197,7 @@ private:
 	_tMQTTASensor* get_auto_discovery_sensor_unit(const _tMQTTASensor* pSensor, const std::string& szMeasurementUnit);
 	_tMQTTASensor* get_auto_discovery_sensor_unit(const _tMQTTASensor* pSensor, const uint8_t devType, const int subType = -1, const int devUnit = -1);
 	_tMQTTASensor* get_auto_discovery_sensor_WATT_unit(const _tMQTTASensor* pSensor);
+	bool HaveSingleTempHumBaro(const std::string &device_identifiers);
 private:
 	std::string m_TopicDiscoveryPrefix;
 

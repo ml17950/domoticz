@@ -40,8 +40,10 @@ History :
 * Add digital input processing for frame receive by bloc 7 (and future used)
 * So input must be set before use with configuration tool.
 * Fixed bad sID write for supply voltage receive by bloc 9/sfsp (so old id used were incorrect )
-
 */
+
+//GizMoCuz: Please change all comments in English, so we can understand it too.
+//The above link of the SDSP bloc does not work
 
 #include "stdafx.h"
 #include "USBtin_MultiblocV8.h"
@@ -57,8 +59,6 @@ History :
 #include <string>
 
 #include <bitset> // This is necessary to compile on Windows
-
-#define round(a) (int)(a + .5)
 
 #define MULTIBLOC_V8_VERSION "04.00.00"
 
@@ -663,7 +663,7 @@ void USBtin_MultiblocV8::BlocList_GetInfo(const unsigned int RefBloc, const char
 
 void USBtin_MultiblocV8::InsertUpdateControlSwitch(const int NodeID, const int ChildID, const std::string& defaultname)
 {
-
+	//GizMoCuz: This should be done via CDomoticzHardwareBase::SendSwitch?
 	// make device ID
 	unsigned char ID1 = (unsigned char)((NodeID & 0xFF000000) >> 24);
 	unsigned char ID2 = (unsigned char)((NodeID & 0xFF0000) >> 16);
@@ -678,9 +678,9 @@ void USBtin_MultiblocV8::InsertUpdateControlSwitch(const int NodeID, const int C
 
 	if (result.empty())
 	{
-		m_sql.safe_query("INSERT INTO DeviceStatus (HardwareID, DeviceID, Unit, Type, SubType, SwitchType, Used, SignalLevel, BatteryLevel, Name, nValue, sValue) "
-			"VALUES (%d,'%q',%d,%d,%d,%d,0, 12,255,'%q',0,' ')",
-			m_HwdID, szIdx, ChildID, pTypeLighting2, sTypeAC, int(STYPE_PushOn), defaultname.c_str());
+		m_sql.safe_query("INSERT INTO DeviceStatus (HardwareID, OrgHardwareID, DeviceID, Unit, Type, SubType, SwitchType, Used, SignalLevel, BatteryLevel, Name, nValue, sValue) "
+			"VALUES (%d, %d,'%q',%d,%d,%d,%d,0, 12,255,'%q',0,' ')",
+			m_HwdID, 0, szIdx, ChildID, pTypeLighting2, sTypeAC, int(STYPE_PushOn), defaultname.c_str());
 	}
 	else
 	{ // sinon on remet à 0 les état ici
@@ -1269,7 +1269,7 @@ bool USBtin_MultiblocV8::WriteToHardware(const char* pdata, const unsigned char 
 	if (packettype == pTypeLighting2)
 	{
 		// if it's light command
-		// retreive the ID information of the blocs (Rebloc+Codage+Ssréseau ):
+		// retrieve the ID information of the blocs (Rebloc+Codage+Ssréseau ):
 		sID_EnBase = (pSen->LIGHTING2.id1 << 24) + (pSen->LIGHTING2.id2 << 16) + (pSen->LIGHTING2.id3 << 8) + (pSen->LIGHTING2.id4);
 		FrameType = (sID_EnBase & MSK_TYPE_TRAME) >> SHIFT_TYPE_TRAME;
 		ReferenceBloc = (sID_EnBase & MSK_INDEX_MODULE) >> SHIFT_INDEX_MODULE;
@@ -1465,7 +1465,7 @@ void USBtin_MultiblocV8::USBtin_MultiblocV8_Send_SFSP_LearnCommand_OnCAN(long ba
 	}
 	writeFrame(szTrameToSend);
 	/*
-	char RefBloc = (baseID_ToSend & MSK_INDEX_MODULE) >> SHIFT_INDEX_MODULE; //retreive the refblock
+	char RefBloc = (baseID_ToSend & MSK_INDEX_MODULE) >> SHIFT_INDEX_MODULE; //retrieve the refblock
 
 	switch(RefBloc){
 		case BLOC_SFSP_M :
@@ -1482,7 +1482,7 @@ void USBtin_MultiblocV8::USBtin_MultiblocV8_Send_SFSP_LearnCommand_OnCAN(long ba
 	}*/
 }
 
-int USBtin_MultiblocV8::getIndexFromBlocname(std::string blocname)
+size_t USBtin_MultiblocV8::getIndexFromBlocname(std::string blocname)
 {
 	for (size_t i = 0; i < NomRefBloc.size(); i++)
 	{
@@ -1686,7 +1686,7 @@ void USBtin_MultiblocV8::SendIBTemperatureSensor(const int NodeID, const uint8_t
 	tsen.TEMP.id1 = (NodeID & 0xff00) >> 8;
 	tsen.TEMP.id2 = NodeID & 0xff;
 	tsen.TEMP.tempsign = (Temp >= 0) ? 0 : 1;
-	int at10 = round(std::abs(Temp * 10.0F));
+	int at10 = ground(std::abs(Temp * 10.0F));
 	tsen.TEMP.temperatureh = (BYTE)(at10 / 256);
 	at10 -= (tsen.TEMP.temperatureh * 256);
 	tsen.TEMP.temperaturel = (BYTE)(at10);

@@ -25,7 +25,7 @@ enum _eSwitchType
 	STYPE_DoorLockInverted = 20,
 	STYPE_BlindsPercentageWithStop = 21,
 
-	STYPE_END = 23 //always set this to highest numer + 1
+	STYPE_END = STYPE_BlindsPercentageWithStop + 1 //always set this to highest numer + 1
 };
 
 enum _eMeterType
@@ -115,7 +115,7 @@ enum _eHardwareTypes {
 	HTYPE_OpenThermGateway,		//18
 	HTYPE_TeleinfoMeter,		//19
 	HTYPE_OpenThermGatewayTCP,	//20
-	HTYPE_FREETOUSE,			//21
+	HTYPE_OpenZWave,			//21
 	HTYPE_LimitlessLights,		//22
 	HTYPE_System,				//23
 	HTYPE_EnOceanESP2,			//24

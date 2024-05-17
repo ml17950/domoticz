@@ -126,10 +126,10 @@ void COctoPrintMQTT::on_connect(int rc)
 
 	if (rc == 0) {
 		if (m_IsConnected) {
-			Log(LOG_STATUS, "re-connected to: %s:%d", m_szIPAddress.c_str(), m_usIPPort);
+			Log(LOG_STATUS, "Re-connected to: %s:%d", m_szIPAddress.c_str(), m_usIPPort);
 		}
 		else {
-			Log(LOG_STATUS, "connected to: %s:%d", m_szIPAddress.c_str(), m_usIPPort);
+			Log(LOG_STATUS, "Connected to: %s:%d", m_szIPAddress.c_str(), m_usIPPort);
 			m_IsConnected = true;
 			sOnConnected(this);
 		}
@@ -149,11 +149,11 @@ void COctoPrintMQTT::on_disconnect(int rc)
 		{
 			if (rc == 5)
 			{
-				Log(LOG_ERROR, "disconnected, Invalid Username/Password (rc=%d)", rc);
+				Log(LOG_ERROR, "Disconnected, Invalid Username/Password (rc=%d)", rc);
 			}
 			else
 			{
-				Log(LOG_ERROR, "disconnected, restarting (rc=%d)", rc);
+				Log(LOG_ERROR, "Disconnected, restarting (rc=%d)", rc);
 			}
 			m_bDoReconnect = true;
 		}
@@ -315,7 +315,7 @@ void COctoPrintMQTT::UpdateUserVariable(const std::string &varName, const std::s
 	}
 
 	m_mainworker.m_eventsystem.SetEventTrigger(ID, m_mainworker.m_eventsystem.REASON_USERVARIABLE, 0);
-	m_mainworker.m_eventsystem.UpdateUserVariable(ID, varValue, sLastUpdate);
+	m_mainworker.m_eventsystem.UpdateUserVariable(ID, varName, (int)USERVARTYPE_STRING, varValue, sLastUpdate);
 }
 
 

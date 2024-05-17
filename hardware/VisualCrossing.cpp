@@ -13,8 +13,6 @@
 #include "../main/Logger.h"
 #include "../main/SQLHelper.h"
 
-#define round(a) ( int ) ( a + .5 )
-
 #ifdef _DEBUG
 //#define DEBUG_VisualCrossingR
 //#define DEBUG_VisualCrossingW
@@ -126,7 +124,7 @@ void CVisualCrossing::GetMeterDetails()
 	sResult = ReadFile("E:\\VisualCrossing.json");
 #else
 	std::stringstream sURL;
-	std::string szLoc = m_Location;
+	std::string szLoc = CURLEncode::URLEncode(m_Location);
 	sURL << "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" << szLoc << "?key=" << m_APIKey << "&unitGroup=metric&include=current";
 	try
 	{
@@ -171,7 +169,7 @@ void CVisualCrossing::GetMeterDetails()
 	
 	if (root["currentConditions"]["humidity"].empty() == false)
 	{
-		humidity = round(root["currentConditions"]["humidity"].asFloat());
+		humidity = ground(root["currentConditions"]["humidity"].asFloat());
 	}
 	if (root["currentConditions"]["pressure"].empty() == false)
 	{

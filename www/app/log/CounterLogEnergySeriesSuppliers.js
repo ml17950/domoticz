@@ -22,8 +22,10 @@ define(['app', 'log/Chart', 'log/CounterLogSeriesSupplier'], function (app) {
             instantAndCounterDaySeriesSuppliers: instantAndCounterDaySeriesSuppliers,
             instantAndCounterWeekSeriesSuppliers: instantAndCounterWeekSeriesSuppliers,
             p1DaySeriesSuppliers: p1DaySeriesSuppliers,
+            p1HourSeriesSuppliers: p1HourSeriesSuppliers,
             p1WeekSeriesSuppliers: p1WeekSeriesSuppliers,
             powerReturnedDaySeriesSuppliers: powerReturnedDaySeriesSuppliers,
+            powerReturnedHourSeriesSuppliers: powerReturnedHourSeriesSuppliers,
             powerReturnedWeekSeriesSuppliers: powerReturnedWeekSeriesSuppliers,
             powerReturnedMonthYearSeriesSuppliers: powerReturnedMonthYearSeriesSuppliers
         };
@@ -215,6 +217,56 @@ define(['app', 'log/Chart', 'log/CounterLogSeriesSupplier'], function (app) {
             ];
         }
 
+        function p1HourSeriesSuppliers(deviceType) {
+            return [
+                counterLogSeriesSupplier.summingSeriesSupplier({
+                    id: 'p1EnergyUsed',
+                    dataItemKeys: ['v'],
+                    label: 'C',
+                    series: {
+                        type: 'column',
+                        name: $.t('Usage'),
+                        zIndex: 2,
+                        tooltip: {
+                            valueSuffix: ' ' + chart.valueUnits.energy(chart.valueMultipliers.m1),
+                            valueDecimals: 0
+                        },
+						//pointPadding: 0.0,
+						pointPlacement: 0,
+						//pointWidth: 10,
+                        color: 'rgba(3,190,252,0.8)',
+                        yAxis: 0
+                    }
+                })
+            ];
+        }
+        function powerReturnedHourSeriesSuppliers(deviceType) {
+			return [
+				counterLogSeriesSupplier.summingSeriesSupplier({
+					id: 'powerReturned',
+					dataItemKeys: ['r'],
+                    dataIsValid: function (data) {
+                        return data.delivered === true;
+                    },
+					label: 'C',
+					series: {
+						type: 'column',
+						name: $.t('Return'),
+						zIndex: 2,
+						tooltip: {
+							valueSuffix: ' ' + chart.valueUnits.energy(chart.valueMultipliers.m1),
+							valueDecimals: 0
+						},
+						pointPadding: 0.2,
+						pointPlacement: 0,
+						//pointWidth: 10,
+						color: 'rgba(3,252,190,0.8)',
+						yAxis: 0
+					}
+				})
+            ];
+        }
+
         function p1WeekSeriesSuppliers(deviceType) {
             return [
                 {
@@ -318,9 +370,11 @@ define(['app', 'log/Chart', 'log/CounterLogSeriesSupplier'], function (app) {
                     id: 'powerReturned1',
                     dataItemKeys: ['r1'],
                     dataIsValid: function (data) {
-						//make all values negative for the graph
-						for (var i = 0; i < data.result.length; i++) {
-							data.result[i]['r1']= -data.result[i]['r1'];
+						if (data.result !== undefined) {
+							//make all values negative for the graph
+							for (var i = 0; i < data.result.length; i++) {
+								data.result[i]['r1']= -data.result[i]['r1'];
+							}
 						}
                         return data.delivered === true;
                     },
