@@ -181,9 +181,9 @@ define(['app'], function (app) {
 
 			$.devIdx=-1;
 
-			$('#updelclr #timerplanedit').attr("class", "btnstyle3-dis");
-			$('#updelclr #timerplancopy').attr("class", "btnstyle3-dis");
-			$('#updelclr #timerplandelete').attr("class", "btnstyle3-dis");
+			$('#updelclr #timerplanedit').hide();
+			$('#updelclr #timerplancopy').hide();
+			$('#updelclr #timerplandelete').hide();
 
 			var oTable = $('#timerplantable').dataTable();
 			oTable.fnClearTable();
@@ -217,31 +217,31 @@ define(['app'], function (app) {
 				$.devIdx=-1;
 				if ( $(this).hasClass('row_selected') ) {
 					$(this).removeClass('row_selected');
-					$('#updelclr #timerplanedit').attr("class", "btnstyle3-dis");
-					$('#updelclr #timerplancopy').attr("class", "btnstyle3-dis");
-					$('#updelclr #timerplandelete').attr("class", "btnstyle3-dis");
+					$('#updelclr #timerplanedit').hide();
+					$('#updelclr #timerplancopy').hide();
+					$('#updelclr #timerplandelete').hide();
 					$("#dialog-add-edit-plan #planname").val("");
 				}
 				else {
 					var oTable = $('#timerplantable').dataTable();
 					oTable.$('tr.row_selected').removeClass('row_selected');
 					$(this).addClass('row_selected');
-					$('#updelclr #timerplanedit').attr("class", "btnstyle3-dis");
-					$('#updelclr #timerplancopy').attr("class", "btnstyle3-dis");
-					$('#updelclr #timerplandelete').attr("class", "btnstyle3-dis");
+					$('#updelclr #timerplanedit').hide();
+					$('#updelclr #timerplancopy').hide();
+					$('#updelclr #timerplandelete').hide();
 					
 					var anSelected = fnGetSelected( oTable );
 					if ( anSelected.length !== 0 ) {
 						var data = oTable.fnGetData( anSelected[0] );
 						var idx= data["DT_RowId"];
 						$.devIdx=idx;
-						$('#updelclr #timerplanedit').attr("class", "btnstyle3");
+						$('#updelclr #timerplanedit').show();
 						$("#updelclr #timerplanedit").attr("href", "javascript:EditTimerPlan(" + idx + ")");
-						$('#updelclr #timerplancopy').attr("class", "btnstyle3");
+						$('#updelclr #timerplancopy').show();
 						$("#updelclr #timerplancopy").attr("href", "javascript:CopyTimerPlan(" + idx + ")");
 						if (idx!=0) {
 							//not allowed to delete the default timer plan
-							$('#updelclr #timerplandelete').attr("class", "btnstyle3");
+							$('#updelclr #timerplandelete').show();
 							$("#updelclr #timerplandelete").attr("href", "javascript:DeleteTimerPlan(" + idx + ")");
 						}
 						var DisplayName = decodeURIComponent(data["Name"]);

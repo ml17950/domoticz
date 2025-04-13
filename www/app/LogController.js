@@ -119,10 +119,10 @@ define(['app'], function (app) {
 
 		$scope.ResizeLogWindow = function () {
 			var pheight = $(window).innerHeight();
-			$("#logcontent #logdata").height(pheight - 160);
-			$("#logcontent #logdata_status").height(pheight - 160);
-			$("#logcontent #logdata_error").height(pheight - 160);
-			$("#logcontent #logdata_debug").height(pheight - 160);
+			$("#logcontent #logdata").height(pheight - 180);
+			$("#logcontent #logdata_status").height(pheight - 180);
+			$("#logcontent #logdata_error").height(pheight - 180);
+			$("#logcontent #logdata_debug").height(pheight - 180);
 		}
 
 		init();
