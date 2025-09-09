@@ -3224,7 +3224,7 @@ void CEnOceanESP3::ParseERP1Packet(uint8_t *data, uint16_t datalen, uint8_t *opt
 						SendWattMeter(senderID, CH, -1, MR, pNode->name.c_str(), rssi);
 					}
 
-					Debug(DEBUG_NORM, "4BS msg: Node %08X (%s) CH %u DT %u DIV %u (scaleMax %.3F) MR %u",
+					Debug(DEBUG_NORM, "4BS msg: Node %08X (%s) CH %u DT %u DIV %u (scaleMax %.3F) MR %f",
 						senderID, pNode->name.c_str(), CH, DT, DIV, scaleMax, MR);
 
 					return;
@@ -4448,7 +4448,7 @@ uint32_t CEnOceanESP3::sendVld(unsigned int destID, T_DATAFIELD *OffsetDes, ...)
 	if (DataSize)
 		sendVld(destID, data, DataSize);
 	else
-		Log(LOG_ERROR, "sendVld: invalid argument number, cmd %s : %s ", OffsetDes->ShortCut.c_str(), OffsetDes->description.c_str());
+		Log(LOG_ERROR, "sendVld: invalid argument number, cmd %s : %s", OffsetDes->ShortCut.c_str(), OffsetDes->description.c_str());
 
 	va_end(value);
 
